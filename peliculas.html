@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Películas Recientes</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <b><h1> Pagina de Películas </h1></b>
+
+  <div id="peliculas"> 
+    <h2>En esta pagina podras encontrar peliculas que se encuentran actualmente en cines 
+      o en streaming de distintas clasificaciones, generos y calificaciones 
+    </h2>
+  </div>
+
+  <script>
+    const API_KEY = "SU_API_KEY"; // Reemplaza con tu API Key
+    const URL_API = "https://api.themoviedb.org/3/movie/now_playing?api_key=" + "a2594f98cb3454536e2299a8cc90969f" + "&language=es-ES";
+
+    const obtenerPeliculas = async () => {
+      const respuesta = await fetch(URL_API);
+      const datos = await respuesta.json();
+      const peliculas = datos.results;
+
+      for (const pelicula of peliculas) {
+        const tarjetaPelicula = document.createElement("div");
+        tarjetaPelicula.classList.add("tarjeta-pelicula");
+
+        const imagen = document.createElement("img");
+        imagen.src = "https://image.tmdb.org/t/p/w200/" + pelicula.poster_path; // Redimensiona la imagen a 200px de ancho
+        imagen.alt = pelicula.title;
+        tarjetaPelicula.appendChild(imagen);
+
+        const titulo = document.createElement("h2");
+        titulo.textContent = pelicula.title;
+        tarjetaPelicula.appendChild(titulo);
+
+        const descripcion = document.createElement("h4");
+        descripcion.textContent = "Descripcion: "+pelicula.overview;
+        tarjetaPelicula.appendChild(descripcion);
+
+        const fechaEstreno = document.createElement("p");
+        fechaEstreno.textContent = "Fecha de estreno: " + pelicula.release_date;
+        tarjetaPelicula.appendChild(fechaEstreno);
+
+        const puntuacion = document.createElement("p");
+        puntuacion.textContent = "Puntuación: " + pelicula.vote_average;
+        tarjetaPelicula.appendChild(puntuacion);
+
+        document.getElementById("peliculas").appendChild(tarjetaPelicula);
+      }
+    };
+    
+
+    obtenerPeliculas();
+  </script>
+  
+</body>
+</html>
